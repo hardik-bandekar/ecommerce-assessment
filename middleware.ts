@@ -39,16 +39,12 @@ import type { NextRequest } from "next/server";
 // ------------------------------------------------------
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
 
   const isProtectedRoute =
     pathname.startsWith("/products") || pathname.startsWith("/cart");
 
-  const isNextInternal =
-    request.headers.get("next-router-prefetch") !== null ||
-    request.headers.get("purpose") === "prefetch";
-
-  if (isNextInternal) {
+  if (search.includes("_rsc")) {
     return NextResponse.next();
   }
 

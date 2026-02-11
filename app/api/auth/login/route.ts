@@ -37,8 +37,8 @@ export async function POST(request: Request) {
       name: "token",
       value: data.token,
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: true, // IMPORTANT for Vercel
+      sameSite: "none", // IMPORTANT
       path: "/",
       maxAge: 60 * 60,
     });

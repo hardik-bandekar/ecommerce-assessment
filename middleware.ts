@@ -37,24 +37,30 @@ import type { NextRequest } from "next/server";
 // }
 
 // ------------------------------------------------------
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-  const { pathname, search } = request.nextUrl;
+// export function middleware(request: NextRequest) {
+//   const token = request.cookies.get("token")?.value;
+//   const { pathname, search } = request.nextUrl;
 
-  const isProtectedRoute =
-    pathname.startsWith("/products") || pathname.startsWith("/cart");
+//   const isProtectedRoute =
+//     pathname.startsWith("/products") || pathname.startsWith("/cart");
 
-  if (search.includes("_rsc")) {
-    return NextResponse.next();
-  }
+//   if (search.includes("_rsc")) {
+//     return NextResponse.next();
+//   }
 
-  if (!token && isProtectedRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+//   if (!token && isProtectedRoute) {
+//     return NextResponse.redirect(new URL("/login", request.url));
+//   }
 
-  return NextResponse.next();
+//   return NextResponse.next();
+// }
+
+// export const config = {
+//   matcher: ["/products/:path*", "/cart/:path*"],
+// };
+
+// -----------------------------------------------------------
+
+export function middleware() {
+  return;
 }
-
-export const config = {
-  matcher: ["/products/:path*", "/cart/:path*"],
-};

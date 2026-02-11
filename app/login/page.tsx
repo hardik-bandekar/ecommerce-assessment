@@ -10,7 +10,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (loading) return;
 
     setLoading(true);
@@ -31,9 +30,8 @@ export default function LoginPage() {
         return;
       }
 
-      // 🔥 IMPORTANT: force full reload so middleware sees cookie
+      // Force full reload so cookies are available
       window.location.href = "/products";
-
     } catch {
       setError("Something went wrong");
       setLoading(false);

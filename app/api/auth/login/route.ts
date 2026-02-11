@@ -4,8 +4,7 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { username, password } = body;
+    const { username, password } = await request.json();
 
     if (!username || !password) {
       return NextResponse.json(
@@ -18,13 +17,8 @@ export async function POST(request: Request) {
       "https://dummyjson.com/auth/login?expiresInMins=60",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
       },
     );
 
@@ -43,23 +37,19 @@ export async function POST(request: Request) {
       name: "token",
       value: data.token,
       httpOnly: true,
-      secure: false, // VERY IMPORTANT in localhost
+      secure: true, // Required for Vercel
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60, // 1 hour
+      maxAge: 60 * 60,
     });
 
     return res;
-  } catch (err: unknown) {
-    console.error("LOGIN ERROR:", err);
-
-    let message = "Something went wrong";
-
-    if (err instanceof Error) {
-      message = err.message;
-    }
-
-    return NextResponse.json({ message }, { status: 500 });
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+    return NextResponse.json(
+      { message: "Something went wrong" },
+      { status: 500 },
+    );
   }
 }
 

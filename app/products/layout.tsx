@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function ProductsLayout({
@@ -6,8 +6,13 @@ export default async function ProductsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+  const headersList = await headers();
+  const cookieHeader = headersList.get("cookie");
+
+  const token = cookieHeader
+    ?.split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
 
   if (!token) {
     redirect("/login");
